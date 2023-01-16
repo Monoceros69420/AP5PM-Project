@@ -1,17 +1,44 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
+<ion-menu contentId="main-content">
+	<ion-header color="light">
+		<ion-toolbar>
+			<ion-title>Menu</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<ion-content color="light">
+		<ion-item button detail="false" (click)="openWatchlist()" color="light"> 
+			<ion-icon name="list-outline" slot="start"></ion-icon> View watchlist </ion-item>
+	</ion-content>
+</ion-menu>
+
+<ion-header>
+	<ion-toolbar color="secondary">
+		<ion-title>Popular Movies</ion-title>
+		<ion-menu-button slot="start"></ion-menu-button>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+<ion-content id="main-content">
+	<ion-searchbar 
+		placeholder="Search popular movies" 
+		show-clear-button="focus"
+		[(ngModel)]="searchTerm"
+		animated>
+	</ion-searchbar>
+	<ion-list>
+		<ion-item button *ngFor="let item of movies | filter:searchTerm" [routerLink]="[item.id]">
+			<ion-avatar slot="start">
+				<img [src]="imageBaseUrl + '/w92' + item.poster_path"/>
+			</ion-avatar>
+			<ion-label> {{item.title}}
+				<p> {{item.release_date | date:'y'}} </p>
+			</ion-label>
+			<ion-badge color="secondary" slot="end" class="bigger"> {{item.vote_average | number: '1.1-1'}} </ion-badge>
+		</ion-item>
+	</ion-list>
+	<ion-infinite-scroll (ionInfinite)="loadMore($any($event))">
+		<ion-infinite-scroll-content
+			loadingSpinner="bubbles"
+			loadingText="Loading more data..."> 
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>

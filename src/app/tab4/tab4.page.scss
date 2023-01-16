@@ -1,0 +1,39 @@
+ion-item.item { margin-top: 20px; }
+ion-avatar {
+    width: 55px;
+    height: 55px;
+    --border-radius: 10px;
+}
+
+ion-badge {
+    --padding-top: 5px;
+    --padding-bottom: 5px;
+}
+
+.bigger {
+    font-size: 15px;
+}
+
+.title-size {
+    font-size: 20px;
+}
+
+.thumb-font {
+    font-size: 20px;
+}
+
+.thumb-resize {
+    height: 80px;
+    width: 80px;
+}
+
+.justify {
+    text-align: justify !important;
+    color: black;
+    font-size: 18px;
+}
+
+.ft{
+    color: gray;
+    font-size: 17px;
+}

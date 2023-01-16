@@ -1,0 +1,79 @@
+<ion-header>
+	<ion-toolbar color="success">
+	<ion-title> {{actor?.name}} </ion-title>
+	<ion-buttons slot="start">
+		<ion-back-button defaultHref="tabs/tab2"></ion-back-button>
+	</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="actor">
+	<ion-card *ngIf="actor">
+		<ng-container *ngIf="actor.profile_path == null; then noav; else av"></ng-container>
+			<ng-template #av>
+					<img [src]="imageBaseUrl + '/w780' + actor.profile_path" class="actor-img"/>
+			</ng-template>
+			<ng-template #noav>
+					<img src="assets/img/blank-person.png"/>
+			</ng-template>
+		<ion-card-header>
+			<ion-card-title> {{actor.name}} </ion-card-title>
+			<ion-card-subtitle class="bigger"> Born: {{actor.birthday | date: 'd/M/yyyy'}} </ion-card-subtitle>
+			<ion-card-subtitle class="bigger"> Place of birth: {{actor.place_of_birth}} </ion-card-subtitle>
+			<ng-container *ngIf="actor.gender == '1'; then female; else male "></ng-container>
+			<ng-template #female>
+				<ion-card-subtitle class="bigger"> Sex: Female </ion-card-subtitle>
+			</ng-template>
+			<ng-template #male>
+				<ion-card-subtitle class="bigger"> Sex: Male </ion-card-subtitle>
+			</ng-template>
+		</ion-card-header>
+		<ion-card-content>
+			<div class="justify"> {{actor.biography}} </div> 
+			<br>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card *ngIf="actor">
+		<ion-card-content>
+			<ng-container *ngIf="actor.known_for_department == 'Acting'">
+			<ion-card-title class="title-size"> Starred in </ion-card-title>
+				<ion-item *ngFor="let feature of credits.cast.slice(0, 6)" (click)="openKnownFor(feature.id)">
+					<ion-thumbnail class="thumb-resize" slot="start">
+						<ng-container *ngIf="feature.poster_path != null; then poster; else noposter"></ng-container>
+						<ng-template #poster>
+							<img [src]="imageBaseUrl + '/w342' + feature.poster_path">
+						</ng-template>
+						<ng-template #noposter>
+							<img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+						</ng-template>
+					</ion-thumbnail>
+					<ion-label class="thumb-font">  {{feature.name || feature.title}} 
+						<ng-container *ngIf="feature.character != ''">
+							<p class="ft" > as {{feature.character}} </p>
+						</ng-container>
+					</ion-label>
+				</ion-item>
+			</ng-container>
+		
+			<ng-container *ngIf="actor.known_for_department == 'Directing'">
+				<ion-card-title class="title-size"> Directed/wrote </ion-card-title>
+				<ion-item *ngFor="let feature of credits.crew.slice(0, 6)" (click)="openKnownFor(feature.id)">
+					<ion-thumbnail class="thumb-resize" slot="start">
+						<ng-container *ngIf="feature.poster_path != null; then poster; else noposter"></ng-container>
+						<ng-template #poster>
+							<img [src]="imageBaseUrl + '/w342' + feature.poster_path">
+						</ng-template>
+						<ng-template #noposter>
+							<img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+						</ng-template>
+					</ion-thumbnail>
+					<ion-label class="thumb-font">  {{feature.name || feature.title}} 
+						<p class="ft"> {{feature.job}} </p>
+					</ion-label>
+				</ion-item>
+			</ng-container>
+		</ion-card-content>
+	</ion-card>
+</ion-content>
+

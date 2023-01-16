@@ -1,17 +1,55 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
+<ion-header>
+	<ion-toolbar color="warning">
+		<ion-title>{{movie?.title}}</ion-title>
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+	<ion-card *ngIf="movie">
+		<img [src]="imageBaseUrl + '/w780' + movie.poster_path" class="movie-img"/>
+		<ion-card-header>
+			<ion-card-title> {{movie.title}} </ion-card-title>
+			<ion-badge class="bigger"> 
+				<ion-icon name="star" class="smaller"></ion-icon>
+				{{movie.vote_average | number: '1.1-1'}} / 10 
+			</ion-badge>
+			<ion-card-subtitle class="bigger"> {{movie.tagline}} </ion-card-subtitle>
+			<ion-text color="tertiary" class="bigger">
+				<span *ngFor="let g of movie.genres; let isLast = last"> {{g.name}} {{!isLast ? ' • ' : ''}} </span>
+			</ion-text> <br>
+			<ion-button color="success" (click)="watchlistButton()">
+				<ion-icon slot="start" name="bookmark-outline" [name]="zipped ? 'bookmark-outline' : 'bookmark'"></ion-icon>
+				<ion-text> Add to watchlist</ion-text>
+			</ion-button>
+		</ion-card-header>
+		<ion-card-content>
+			<div class="justify"> {{movie.overview}} </div> <br>
+			<ion-item lines="none">
+				<ion-icon name="calendar-outline" slot="start"></ion-icon>
+				<ion-label color="medium"> {{movie.release_date | date: 'd/M/yyyy'}} </ion-label>
+			</ion-item>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+			<ion-item lines="none" *ngIf="movie.runtime != '0'">
+				<ion-icon name="hourglass-outline" slot="start"></ion-icon>
+				<ion-label color="medium"> {{movie.runtime}} minutes </ion-label>
+			</ion-item>
+
+			<ion-item lines="none" *ngIf="movie.budget!='0'">
+				<ion-icon name="cash-outline" slot="start"></ion-icon>
+				<ion-label color="medium"> {{movie.budget | currency: 'EUR' : 'symbol' : '1.0-0'}} </ion-label>
+			</ion-item>
+
+			<ion-item lines="none" *ngIf="movie.revenue!='0'">
+				<ion-icon name="wallet-outline" slot="start"></ion-icon>
+				<ion-label color="medium"> {{movie.revenue | currency: 'EUR' : 'symbol' : '1.0-0'}} </ion-label>
+			</ion-item>
+		</ion-card-content>
+	</ion-card>
 </ion-content>
+
+<ion-footer>
+	<ion-button expand="full" (click)="openHomepage()">Open Movie Homepage</ion-button>
+</ion-footer>
