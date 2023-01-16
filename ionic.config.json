@@ -1,0 +1,7 @@
+{
+  "name": "TMDB Lite",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
